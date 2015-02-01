@@ -1,0 +1,29 @@
+{
+  "name": "index-feed",
+  "version": "1.0.0",
+  "description": "setup a changes feed and index processor for a leveldb",
+  "main": "index.js",
+  "dependencies": {
+    "changes-feed": "^1.0.0",
+    "changes-index": "^1.0.1",
+    "changesdown": "^2.2.2",
+    "levelup-defaults": "^1.0.2",
+    "sublevel": "^2.4.0",
+    "subleveldown": "^1.1.0",
+    "through2": "~0.6.3"
+  },
+  "devDependencies": {
+    "level": "^0.18.0"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "keywords": [
+    "leveldb",
+    "changes",
+    "feed",
+    "index"
+  ],
+  "author": "substack",
+  "license": "MIT"
+}

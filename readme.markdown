@@ -12,17 +12,18 @@ This module provides a wrapper around setting up:
 
 ``` js
 var ixfeed = require('index-feed');
+var through = require('through2');
 var level = require('level');
 
-var ddb = level(__dirname + '/data.db', { valueEncoding: 'json' });
+var ddb = level(__dirname + '/data.db');
 var idb = level(__dirname + '/index.db');
+var ixf = ixfeed({ data: ddb, index: idb, valueEncoding: 'json' });
 
-var ixf = ixfeed();
 ixf.index.add(function (row, cb) {
-    if (/^user!/.test(row.key)) {
+    if (/^hacker!/.test(row.key)) {
         cb(null, {
-            'user.name': row.value.name,
-            'user.space': row.value.hackerspace
+            'hacker.name': row.value.name,
+            'hacker.space': row.value.hackerspace
         });
     }
     else cb()
@@ -35,25 +36,25 @@ ixf.feed.createReadStream({ live: true })
 ixf.db.batch([
     {
         type: 'put',
-        key: 'user!1',
+        key: 'hacker!1',
         value: { name: 'substack', hackerspace: 'sudoroom' }
     },
     {
         type: 'put',
-        key: 'user!2',
+        key: 'hacker!2',
         value: { name: 'mk30', hackerspace: 'sudoroom' }
     },
     {
         type: 'put',
-        key: 'user!3',
+        key: 'hacker!3',
         value: { name: 'mitch', hackerspace: 'noisebridge' }
     }
 ], ready);
 
 function ready () {
-    var sudoroom = ixf.indexes.createReadStream('user.space', {
-        lte: 'sudoroom',
-        gte: 'sudoroom'
+    // list all hackers at sudoroom:
+    var sudoroom = ixf.index.createReadStream('hacker.space', {
+        lte: 'sudoroom', gte: 'sudoroom'
     });
     sudoroom.pipe(through.obj(function (row, enc, next) {
         console.log(row.value.name);
@@ -62,3 +63,30 @@ function ready () {
 }
 ```
 
+# methods
+
+``` js
+var ixfeed = require('index-feed')
+```
+
+## var ixf = ixfeed(opts)
+
+Create a new `ixf` object from required options:
+
+* `opts.data` - levelup instance to use for storing data
+* `opts.index` - levelup instance to use for storing indexes
+
+and optional options:
+
+* `opts.keyEncoding` - keyEncoding to use for log data
+* `opts.valueEncoding` - valueEncoding to use for log data
+
+# properties
+
+* ixf.db - levelup database handle that appends to changesdown
+* ixf.index - [changes-index](https://npmjs.org/package/changes-index) instance
+* ixf.feed - [changes-feed](https://npmjs.org/package/changes-feed) instance
+
+# license
+
+MIT

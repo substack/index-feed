@@ -8,12 +8,15 @@
     "changes-index": "^1.0.1",
     "changesdown": "^2.2.2",
     "levelup-defaults": "^1.0.2",
+    "read-only-stream": "^1.1.1",
     "sublevel": "^2.4.0",
     "subleveldown": "^1.1.0",
     "through2": "~0.6.3"
   },
   "devDependencies": {
-    "level": "^0.18.0"
+    "level": "^0.18.0",
+    "level-test": "^1.6.6",
+    "tape": "^3.5.0"
   },
   "scripts": {
     "test": "tape test/*.js"

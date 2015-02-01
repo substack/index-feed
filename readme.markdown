@@ -29,9 +29,11 @@ ixf.index.add(function (row, cb) {
     else cb()
 });
 
+/*
 ixf.feed.createReadStream({ live: true })
     .on('data', function (ch) { console.log('feed:', ch) })
 ;
+*/
 
 ixf.db.batch([
     {

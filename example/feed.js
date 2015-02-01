@@ -2,8 +2,8 @@ var ixfeed = require('../');
 var through = require('through2');
 var level = require('level');
 
-var ddb = level(__dirname + '/data.db');
-var idb = level(__dirname + '/index.db');
+var ddb = level('/tmp/data.db');
+var idb = level('/tmp/index.db');
 var ixf = ixfeed({ data: ddb, index: idb, valueEncoding: 'json' });
 
 ixf.index.add(function (row, cb) {
@@ -16,9 +16,11 @@ ixf.index.add(function (row, cb) {
     else cb()
 });
 
+/*
 ixf.feed.createReadStream({ live: true })
     .on('data', function (ch) { console.log('feed:', ch) })
 ;
+*/
 
 ixf.db.batch([
     {

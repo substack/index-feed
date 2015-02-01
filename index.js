@@ -16,7 +16,10 @@ module.exports = function (opts) {
         createReadStream: function (opts) {
             var r = feed.createReadStream(opts);
             var tr = through.obj(function (row, enc, next) {
-                this.push(ix._decode(row.value));
+                this.push({
+                    change: row.change,
+                    value: ix._decode(row.value)
+                });
                 next();
             });
             return readonly(r.pipe(tr));
